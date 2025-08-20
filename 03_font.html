@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>폰트</title>
+    <style>
+      .weight-bold {
+        font-weight: bold;
+      }
+      .weight-900 {
+        font-weight: 900;
+      }
+      .italic {
+        font-style: italic;
+      }
+      .lineheight {
+        line-height: 2;
+      }
+      .spacing {
+        letter-spacing: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div>
+      <p class="weight-bold">굵게</p>
+      <p class="weight-900">가장 굵게</p>
+      <p class="italic">기울게</p>
+      <p class="lineheight">줄간격</p>
+      <p class="spacing">장평</p>
+    </div>
+
+    <!-- ==================================================
+       4) 웹폰트 적용 (CDN)
+       - @font-face로 선언한 PartialSansKR-Regular 사용.
+       - body.webfont에 클래스 추가하면 전체 텍스트에 적용.
+       - input/textarea/button에는 직접 font-family 지정 필요.
+  ================================================== -->
+    <h2>4) 웹폰트 적용</h2>
+    <p>
+      아래 버튼을 누르면 body에 <code>webfont</code> 클래스가 추가되어 웹폰트
+      적용됨.
+    </p>
+    <button onclick="document.body.classList.toggle('webfont')">
+      웹폰트 토글
+    </button>
+
+    <p>이 문장은 body에 <b>PartialSansKR-Regular</b>가 적용되면 바뀝니다.</p>
+    <input type="text" placeholder="input도 웹폰트 적용됨" />
+    <textarea rows="2" cols="40">textarea도 웹폰트 적용됨</textarea>
+    <button>버튼도 웹폰트 적용됨</button>
+  </body>
+</html>

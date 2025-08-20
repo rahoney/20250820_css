@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- ****************************************************
+       [브리핑 — 개념 요약]
+       1) 상속(Inheritance)
+          - color, font-family, font-size, line-height 등 텍스트 관련 속성은 부모 → 자식·자손으로 상속.
+          - border, margin, padding 등 박스 속성은 상속되지 않음.
+          - 자식/자손이 같은 속성을 다시 선언하면 조상의 값은 덮어써짐.
+       2) 사이즈 단위
+          - px: 절대 픽셀 값. 화면 크기와 무관.
+          - em: 부모 font-size 기준 배수 → 부모마다 다르게 계산됨. (상속 체인 따라 누적 영향)
+          - rem: html(root) font-size 기준 배수 → 부모 영향 없음. "root em".
+          - %: 부모 대비 비율 (보통 line-height나 width 등에서 자주 사용).
+       3) 글꼴 속성(Font)
+          - font-family: 글꼴 지정. 없으면 fallback 순서대로 적용.
+          - font-weight: normal, bold, 100~900 (브라우저/폰트마다 지원 범위 다름).
+          - font-style: italic, oblique.
+          - line-height: 줄 간격.
+          - letter-spacing: 글자 간격.
+       4) 웹폰트(Web Font)와 CDN
+          - @font-face: 외부 폰트를 불러오는 규칙.
+          - CDN(Content Delivery Network): 전 세계 서버에 분산 저장해 사용자에게 가까운 서버에서 빠르게 제공.
+          - 한국어 웹폰트는 눈누(noonnu.cc) 같은 CDN을 자주 활용.
+          - body에 지정해도 form 요소(input, textarea, button)는 시스템 기본 폰트를 사용하는 경우가 많아 별도 지정 필요.
+     **************************************************** -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>상속</title>
+    <style>
+      /* STEP 0. 기본 폰트 */
+      body {
+        font-family: sans-serif;
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      /* STEP 1. 상속 실습 */
+      .ancestor {
+        color: green;
+        font-size: 18px;
+      }
+      .grandchild {
+        color: red; /* 조상에게서 상속받은 값 덮어쓰기 */
+      }
+      .ancestor-box {
+        border: 2px solid orange; /* border는 상속되지 않음 */
+        padding: 10px;
+      }
+
+      /* STEP 2. 사이즈 단위 */
+      html {
+        font-size: 16px;
+      } /* rem의 기준 */
+      .sizes p {
+        margin: 0.3em 0;
+      }
+      .px {
+        font-size: 24px;
+      }
+      .em {
+        font-size: 2em;
+      } /* 부모 font-size 기준 */
+      .rem {
+        font-size: 1.5rem;
+      } /* html font-size 기준 */
+      .percent {
+        font-size: 120%;
+      }
+
+      /* em vs rem 차이 비교 */
+      .parent {
+        font-size: 20px;
+        background: #f9f9f9;
+        padding: 8px;
+      }
+      .child-em {
+        font-size: 2em;
+      } /* 부모(20px)*2 = 40px */
+      .child-rem {
+        font-size: 2rem;
+      } /* html(16px)*2 = 32px */
+
+      /* STEP 3. 글꼴 속성 */
+      .font-family-serif {
+        font-family: Georgia, "Times New Roman", serif;
+      }
+      .font-family-sans {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .weight-normal {
+        font-weight: normal;
+      }
+      .weight-bold {
+        font-weight: bold;
+      }
+      .weight-900 {
+        font-weight: 900;
+      }
+      .italic {
+        font-style: italic;
+      }
+      .lineheight {
+        line-height: 2;
+        background: #f0f0f0;
+      }
+      .spacing {
+        letter-spacing: 4px;
+        background: #fafafa;
+      }
+
+      /* STEP 4. 웹폰트 선언 (CDN에서 가져오기) */
+      @font-face {
+        font-family: "PartialSansKR-Regular";
+        src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/PartialSansKR-Regular.woff2")
+          format("woff2");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      /* 웹폰트 적용 */
+      body.webfont {
+        font-family: "PartialSansKR-Regular", sans-serif;
+      }
+      input,
+      textarea,
+      button {
+        font-family: "PartialSansKR-Regular", sans-serif; /* inherit 대신 직접 지정 */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- div: 구분된 블록을 하나 만들어줌 (한 줄을 다 추가)-->
+    <div>div는 위아래 여백이 없음 줄 블럭을 차지.</div>
+    <p>p는 위아래 여백이 있음</p>
+    <div>emmet 약어</div>
+
+    <div class="ancestor">
+      조상 div (.ancestor) → color: green; font-size: 18px
+      <div class="child">
+        자식 div (.child)도 초록색 18px
+        <div class="grandchild">
+          손자 div (.grandchild)은 color: red; 로 덮어씀
+        </div>
+      </div>
+    </div>
+
+    <div class="sizes">
+      <p class="px">px 절대크기</p>
+      <p class="em">em 상대크기</p>
+      <p class="rem">rem html기준</p>
+      <p class="percent">% 부모대비</p>
+    </div>
+
+    <div>
+      <h2>em과 rem</h2>
+      <div class="parent">
+        부모(.parent) font-size: 20px
+        <p class="child-em">2em - 40px</p>
+        <p class="child-rem">2rem - 32px</p>
+      </div>
+    </div>
+    <p></p>
+    <p></p>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+  </body>
+</html>
