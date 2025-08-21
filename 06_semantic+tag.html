@@ -4,38 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Semantic Tag</title>
+    <style>
+      /* 내부 스타일 시트 */
+      /* 선택자 { 스타일 속성: 값; 스타일 속성: 값; 스타일 속성: 값; ... } */
+      .block {
+        background-color: lightblue;
+        display: block;
+        /* display: none; */
+        padding: 1rem;
+        margin: 1rem;
+        width: 240px;
+        height: 240px;
+      }
+      .inline {
+        /* 글자 콘텐츠 취급 -> 줄 높이 */
+        display: inline;
+        background-color: lightgreen;
+        padding: 1rem; /* x */
+        margin: 1rem; /* 왼쪽, 오른쪽만 적용 */
+        width: 240px; /* 사이즈 관련된 건 무시 */
+        height: 240px; /* 사이즈 관련된 건 무시 */
+      }
+      .inline-block {
+        /* 가로 100%를 차지하게 하지 않지만, 박스모델은 온전히 적용 */
+        display: inline-block;
+        background-color: lightcoral;
+        padding: 1rem; /* x */
+        margin: 1rem; /* 왼쪽, 오른쪽만 적용 */
+        width: 240px; /* 사이즈 관련된 건 무시 */
+        height: 240px; /* 사이즈 관련된 건 무시 */
+      }
+    </style>
   </head>
-  <style>
-    /* 내부 스타일 시트 */
-    /* 선택자 { 스타일 속성: 값; 스타일 속성: 값; 스타일 속성: 값; ... } */
-    .block {
-      background-color: lightblue;
-      display: block;
-      /* display: none; */
-      padding: 1rem;
-      margin: 1rem;
-      width: 240px;
-      height: 240px;
-    }
-    .inline {
-      /* 글자 콘텐츠 취급 -> 줄 높이 */
-      display: inline;
-      background-color: lightgreen;
-      padding: 1rem; /* x */
-      margin: 1rem; /* 왼쪽, 오른쪽만 적용 */
-      width: 240px; /* 사이즈 관련된 건 무시 */
-      height: 240px; /* 사이즈 관련된 건 무시 */
-    }
-    .inline-block {
-      /* 가로 100%를 차지하게 하지 않지만, 박스모델은 온전히 적용 */
-      display: inline-block;
-      background-color: lightcoral;
-      padding: 1rem; /* x */
-      margin: 1rem; /* 왼쪽, 오른쪽만 적용 */
-      width: 240px; /* 사이즈 관련된 건 무시 */
-      height: 240px; /* 사이즈 관련된 건 무시 */
-    }
-  </style>
+
   <body>
     <div>
       <h2>시맨틱 태그</h2>
