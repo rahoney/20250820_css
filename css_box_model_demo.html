@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 박스 모델 완전 정복</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 5px solid #007bff;
+        }
+        
+        .section h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        
+        .demo-area {
+            background: white;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        /* 1. Box-sizing 데모 */
+        .box-demo {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .content-box {
+            box-sizing: content-box;
+            width: 200px;
+            height: 100px;
+            padding: 20px;
+            border: 5px solid #ff6b6b;
+            background: #ffe6e6;
+            margin: 10px;
+        }
+        
+        .border-box {
+            box-sizing: border-box;
+            width: 200px;
+            height: 100px;
+            padding: 20px;
+            border: 5px solid #4ecdc4;
+            background: #e6fffe;
+            margin: 10px;
+        }
+        
+        .box-label {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        /* 2. Padding, Border, Margin 데모 */
+        .spacing-demo {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .spacing-box {
+            width: 150px;
+            height: 100px;
+            background: #ffd93d;
+            text-align: center;
+            line-height: 100px;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .padding-demo {
+            padding: 30px;
+            background-clip: content-box;
+            border: 3px solid transparent;
+            background-image: 
+                linear-gradient(#ffd93d, #ffd93d),
+                linear-gradient(#ff6b6b, #ff6b6b);
+            background-origin: padding-box, border-box;
+        }
+        
+        .border-demo {
+            border: 15px solid #4ecdc4;
+        }
+        
+        .margin-demo {
+            margin: 25px;
+            box-shadow: 0 0 0 25px rgba(255, 107, 107, 0.2);
+        }
+        
+        /* 3. Margin 충돌 데모 */
+        .margin-collapse-demo {
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        
+        .collapse-box1 {
+            background: #ff9ff3;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .collapse-box2 {
+            background: #54a0ff;
+            color: white;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        /* 4. 정확한 크기와 간격 데모 */
+        .precise-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .precise-box {
+            box-sizing: border-box;
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        
+        .precise-box.with-padding {
+            padding: 20px;
+        }
+        
+        .precise-box.with-border {
+            border: 10px solid #ffd93d;
+        }
+        
+        /* 5. Overflow 데모 */
+        .overflow-demo {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .overflow-container {
+            width: 200px;
+            height: 150px;
+            border: 3px solid #333;
+            background: #f8f9fa;
+            position: relative;
+        }
+        
+        .overflow-content {
+            width: 250px;
+            height: 200px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .overflow-visible {
+            overflow: visible;
+        }
+        
+        .overflow-hidden {
+            overflow: hidden;
+        }
+        
+        .overflow-scroll {
+            overflow: scroll;
+        }
+        
+        .overflow-auto {
+            overflow: auto;
+        }
+        
+        /* 인터랙티브 요소들 */
+        .interactive-demo {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .control-panel {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .control-group label {
+            font-weight: bold;
+            color: #2196f3;
+        }
+        
+        .control-group input, .control-group select {
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .interactive-box {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 8px;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+        }
+        
+        .code-display {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+        }
+        
+        .highlight {
+            background: rgba(255, 255, 0, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .tip {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 CSS 박스 모델 완전 정복</h1>
+            <p>box-sizing, padding, margin, border, overflow 한번에 마스터하기!</p>
+        </div>
+        
+        <div class="content">
+            <!-- 1. Box-sizing 섹션 -->
+            <div class="section">
+                <h2>1. 📦 Box-sizing: content-box vs border-box</h2>
+                <p><strong>가장 중요한 개념!</strong> 요소의 크기를 어떻게 계산할지 결정합니다.</p>
+                
+                <div class="demo-area">
+                    <div class="box-demo">
+                        <div>
+                            <div class="content-box">Content Box</div>
+                            <div class="box-label">content-box (기본값)<br>실제 크기: 250px × 150px</div>
+                        </div>
+                        <div>
+                            <div class="border-box">Border Box</div>
+                            <div class="box-label">border-box<br>실제 크기: 200px × 100px</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="warning">
+                    <strong>⚠️ 주의사항:</strong> content-box는 width/height에 padding과 border가 추가되어 예상보다 커집니다!
+                </div>
+                
+                <div class="tip">
+                    <strong>💡 팁:</strong> 대부분의 개발자들은 border-box를 선호합니다. 크기 계산이 직관적이기 때문입니다.
+                </div>
+            </div>
+            
+            <!-- 2. Padding, Border, Margin 시각화 -->
+            <div class="section">
+                <h2>2. 📏 Padding, Border, Margin 비교</h2>
+                <p>각각의 역할과 시각적 차이를 확인해보세요.</p>
+                
+                <div class="demo-area">
+                    <div class="spacing-demo">
+                        <div>
+                            <div class="spacing-box">기본</div>
+                            <div class="box-label">원본 박스</div>
+                        </div>
+                        <div>
+                            <div class="spacing-box padding-demo">Padding</div>
+                            <div class="box-label">패딩 30px<br>(내부 여백)</div>
+                        </div>
+                        <div>
+                            <div class="spacing-box border-demo">Border</div>
+                            <div class="box-label">보더 15px<br>(테두리)</div>
+                        </div>
+                        <div>
+                            <div class="spacing-box margin-demo">Margin</div>
+                            <div class="box-label">마진 25px<br>(외부 여백)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>💡 기억하기:</strong>
+                    <br>• <strong>Padding</strong>: 내용물과 테두리 사이의 공간 (배경색 포함)
+                    <br>• <strong>Border</strong>: 요소의 테두리 (색상, 두께, 스타일 설정 가능)
+                    <br>• <strong>Margin</strong>: 다른 요소와의 거리 (배경색 없음)
+                </div>
+            </div>
+            
+            <!-- 3. Margin 충돌 문제 -->
+            <div class="section">
+                <h2>3. ⚡ Margin 충돌 (Margin Collapse)</h2>
+                <p>세로 방향 마진이 겹칠 때 발생하는 현상입니다.</p>
+                
+                <div class="demo-area">
+                    <div class="margin-collapse-demo">
+                        <div class="collapse-box1">
+                            첫 번째 박스<br>
+                            <small>margin-bottom: 30px</small>
+                        </div>
+                        <div class="collapse-box2">
+                            두 번째 박스<br>
+                            <small>margin-top: 20px</small>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; color: #666;">
+                        실제 간격: 30px (큰 값이 적용됨, 50px가 아님!)
+                    </p>
+                </div>
+                
+                <div class="warning">
+                    <strong>⚠️ Margin 충돌 규칙:</strong>
+                    <br>• 세로 방향 마진만 충돌함 (가로는 충돌 안 함)
+                    <br>• 큰 마진 값이 적용됨
+                    <br>• float, flexbox, grid에서는 충돌 안 함
+                </div>
+            </div>
+            
+            <!-- 4. 정확한 크기와 간격 -->
+            <div class="section">
+                <h2>4. 🎯 정확한 크기와 간격 제어</h2>
+                <p>border-box를 사용하여 예측 가능한 레이아웃을 만들어보세요.</p>
+                
+                <div class="demo-area">
+                    <div class="precise-demo">
+                        <div class="precise-box">
+                            200px × 150px<br>
+                            <small>순수 크기</small>
+                        </div>
+                        <div class="precise-box with-padding">
+                            200px × 150px<br>
+                            <small>패딩 포함 (border-box)</small>
+                        </div>
+                        <div class="precise-box with-border">
+                            200px × 150px<br>
+                            <small>보더 포함 (border-box)</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>💡 프로 팁:</strong> box-sizing: border-box를 사용하면 padding과 border가 포함된 정확한 크기를 설정할 수 있습니다!
+                </div>
+            </div>
+            
+            <!-- 5. Overflow 데모 -->
+            <div class="section">
+                <h2>5. 📦 Overflow 속성 비교</h2>
+                <p>내용이 컨테이너를 벗어날 때의 처리 방법들입니다.</p>
+                
+                <div class="demo-area">
+                    <div class="overflow-demo">
+                        <div>
+                            <div class="overflow-container overflow-visible">
+                                <div class="overflow-content">Visible</div>
+                            </div>
+                            <div class="box-label">overflow: visible<br>(기본값 - 넘침)</div>
+                        </div>
+                        <div>
+                            <div class="overflow-container overflow-hidden">
+                                <div class="overflow-content">Hidden</div>
+                            </div>
+                            <div class="box-label">overflow: hidden<br>(숨김)</div>
+                        </div>
+                        <div>
+                            <div class="overflow-container overflow-scroll">
+                                <div class="overflow-content">Scroll</div>
+                            </div>
+                            <div class="box-label">overflow: scroll<br>(항상 스크롤바)</div>
+                        </div>
+                        <div>
+                            <div class="overflow-container overflow-auto">
+                                <div class="overflow-content">Auto</div>
+                            </div>
+                            <div class="box-label">overflow: auto<br>(필요시 스크롤바)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    <strong>💡 사용 가이드:</strong>
+                    <br>• <strong>visible</strong>: 기본값, 내용이 컨테이너 밖으로 나감
+                    <br>• <strong>hidden</strong>: 넘치는 부분 숨김, 애니메이션에 유용
+                    <br>• <strong>scroll</strong>: 항상 스크롤바 표시
+                    <br>• <strong>auto</strong>: 필요할 때만 스크롤바 (권장)
+                </div>
+            </div>
+            
+            <!-- 6. 인터랙티브 실습 -->
+            <div class="section">
+                <h2>6. 🎮 실시간 박스 모델 실습</h2>
+                <p>값을 조정해보며 박스 모델을 체험해보세요!</p>
+                
+                <div class="interactive-demo">
+                    <div class="control-panel">
+                        <div class="control-group">
+                            <label>Box-sizing</label>
+                            <select id="boxSizing">
+                                <option value="border-box">border-box</option>
+                                <option value="content-box">content-box</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>Width (px)</label>
+                            <input type="range" id="width" min="100" max="300" value="200">
+                            <span id="widthValue">200px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Padding (px)</label>
+                            <input type="range" id="padding" min="0" max="50" value="20">
+                            <span id="paddingValue">20px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Border (px)</label>
+                            <input type="range" id="border" min="0" max="20" value="5">
+                            <span id="borderValue">5px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Margin (px)</label>
+                            <input type="range" id="margin" min="0" max="50" value="15">
+                            <span id="marginValue">15px</span>
+                        </div>
+                        <div class="control-group">
+                            <label>Overflow</label>
+                            <select id="overflow">
+                                <option value="visible">visible</option>
+                                <option value="hidden">hidden</option>
+                                <option value="scroll">scroll</option>
+                                <option value="auto">auto</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
+                        <div id="dynamicBox" class="interactive-box">
+                            인터랙티브 박스<br>
+                            <small id="boxInfo">200px × 150px</small>
+                        </div>
+                    </div>
+                    
+                    <div class="code-display" id="codeDisplay">
+.box {
+  box-sizing: border-box;
+  width: 200px;
+  height: 150px;
+  padding: 20px;
+  border: 5px solid #333;
+  margin: 15px;
+  overflow: visible;
+}</div>
+                </div>
+            </div>
+            
+            <!-- 7. 핵심 요약 -->
+            <div class="section">
+                <h2>7. 📚 핵심 요약 및 베스트 프랙티스</h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #28a745;">
+                        <h3 style="color: #28a745; margin-bottom: 10px;">✅ 권장사항</h3>
+                        <p>• 모든 요소에 <code>box-sizing: border-box</code> 적용</p>
+                        <p>• overflow는 대부분 <code>auto</code> 사용</p>
+                        <p>• 마진 대신 패딩 우선 고려</p>
+                        <p>• Flexbox나 Grid로 마진 충돌 회피</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 8px; border-left: 4px solid #dc3545;">
+                        <h3 style="color: #dc3545; margin-bottom: 10px;">❌ 주의사항</h3>
+                        <p>• content-box는 크기 계산 복잡</p>
+                        <p>• 세로 마진 충돌 현상 주의</p>
+                        <p>• overflow: scroll은 항상 스크롤바</p>
+                        <p>• 마진은 배경색 영향 안 받음</p>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 10px; margin-top: 20px; text-align: center;">
+                    <h3>🎉 축하합니다!</h3>
+                    <p>CSS 박스 모델의 핵심 개념들을 모두 학습하셨습니다.<br>
+                    이제 정확한 레이아웃을 만들 수 있는 실력을 갖추셨어요!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 인터랙티브 컨트롤
+        const dynamicBox = document.getElementById('dynamicBox');
+        const boxInfo = document.getElementById('boxInfo');
+        const codeDisplay = document.getElementById('codeDisplay');
+        
+        const controls = {
+            boxSizing: document.getElementById('boxSizing'),
+            width: document.getElementById('width'),
+            padding: document.getElementById('padding'),
+            border: document.getElementById('border'),
+            margin: document.getElementById('margin'),
+            overflow: document.getElementById('overflow')
+        };
+        
+        const values = {
+            widthValue: document.getElementById('widthValue'),
+            paddingValue: document.getElementById('paddingValue'),
+            borderValue: document.getElementById('borderValue'),
+            marginValue: document.getElementById('marginValue')
+        };
+        
+        function updateBox() {
+            const boxSizing = controls.boxSizing.value;
+            const width = controls.width.value;
+            const padding = controls.padding.value;
+            const border = controls.border.value;
+            const margin = controls.margin.value;
+            const overflow = controls.overflow.value;
+            
+            // 값 표시 업데이트
+            values.widthValue.textContent = width + 'px';
+            values.paddingValue.textContent = padding + 'px';
+            values.borderValue.textContent = border + 'px';
+            values.marginValue.textContent = margin + 'px';
+            
+            // 스타일 적용
+            dynamicBox.style.boxSizing = boxSizing;
+            dynamicBox.style.width = width + 'px';
+            dynamicBox.style.padding = padding + 'px';
+            dynamicBox.style.borderWidth = border + 'px';
+            dynamicBox.style.margin = margin + 'px';
+            dynamicBox.style.overflow = overflow;
+            dynamicBox.style.borderStyle = 'solid';
+            dynamicBox.style.borderColor = '#333';
+            
+            // 실제 크기 계산
+            let actualWidth, actualHeight;
+            if (boxSizing === 'content-box') {
+                actualWidth = parseInt(width) + (parseInt(padding) * 2) + (parseInt(border) * 2);
+                actualHeight = 150 + (parseInt(padding) * 2) + (parseInt(border) * 2);
+            } else {
+                actualWidth = parseInt(width);
+                actualHeight = 150;
+            }
+            
+            boxInfo.innerHTML = `${actualWidth}px × ${actualHeight}px<br><small>${boxSizing}</small>`;
+            
+            // 코드 표시 업데이트
+            codeDisplay.textContent = `.box {
+  box-sizing: ${boxSizing};
+  width: ${width}px;
+  height: 150px;
+  padding: ${padding}px;
+  border: ${border}px solid #333;
+  margin: ${margin}px;
+  overflow: ${overflow};
+}`;
+        }
+        
+        // 이벤트 리스너 추가
+        Object.values(controls).forEach(control => {
+            control.addEventListener('input', updateBox);
+            control.addEventListener('change', updateBox);
+        });
+        
+        // 초기 실행
+        updateBox();
+        
+        // 추가 내용 생성 (overflow 테스트용)
+        const overflowContent = document.querySelector('.overflow-content');
+        if (overflowContent) {
+            const originalText = overflowContent.textContent;
+            overflowContent.innerHTML = originalText + '<br><br>이 텍스트는 컨테이너를 넘어갑니다. overflow 속성에 따라 다르게 표시됩니다.';
+        }
+    </script>
+</body>
+</html>
